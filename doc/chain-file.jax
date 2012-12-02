@@ -22,20 +22,45 @@ License: MIT license  {{{
 
 ==============================================================================
 COMMAND *chain-file-commands*
-:chainFile *:chainFile*
-:chainSet
+:ChainFile [{variables}] *:ChainFile*
+	{variables} に変数名を入力すると、|g:chain_dict|の代わりに使用できます。
+	変数名を複数記述する事ができます。
 
-==============================================================================
-FUNCTIONS *chain-file-functions*
+:ChaineSet {file} *:ChaineSet*
+未実装
+	リンクを設定します。
+
+:ChainSetEach {file} *:ChainSetEach*
+未実装
+	相互リンクを設定します。
 
 ==============================================================================
 VARIABLES *chainj-file-variables*
+
+g:chain_dict *g:chain_dict*
+	下のファイルを結合した変数になります。
+
+	__file	
+		*chain-file-attribute-g:chain_dict-__file*
+	|g:chain_files| に対応する、データを入力します。
+
+	__extension
+		*chain-file-attribute-g:chain_dict-__extension*
+	|g:chain_extenstion| に対応する、データを入力します。
+
 g:chain_files *g:chain_files*
 	遷移するファイル先です。
 
-g:chain_extension *g:chain_extension*
+g:chain_extensions *g:chain_extensions*
 	対応する拡張子です。
 
-優先順位は、|g:chain_extension| > |g:chain_files| になります。
+g:chain_patterns *g:chain_patterns*
+	ファイル名を置換します。
+
+優先順位は、
+|g:chain_extensions| 
+|g:chain_patterns|
+|g:chain_files| 
+になります。
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:noet:fen:fdl=0:

@@ -41,6 +41,22 @@ function! s:get_len_sort(lists) "{{{
 	return sort(a:lists, "s:_len_compara")
 endfunction
 "}}}
+function! s:save(name, dict) "{{{
+	let lines = [
+				\ 'if exists("g:tmp") | unlet g:tmp | endif',
+				\ 'let g:tmp = '.string(dict),
+				\ ]
+	call writefile(lines, a:name)
+endfunction
+"}}}
+function! s:load(name, default) "{{{
+	if filereadable(a:name)
+		exe 'so '.a:name
+	endif
+
+	return get(g:, 'tmp', a:default)
+endfunction
+"}}}
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
