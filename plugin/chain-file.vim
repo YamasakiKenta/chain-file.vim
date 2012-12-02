@@ -8,28 +8,28 @@ let s:chain_dict_default = s:Common.load(s:datafile, {})
 
 " teset "{{{
 if 1
-let g:chain_files = {
-			\ 'a.c' : 'include/ab.h',
-			\ 'b.c' : 'include/ab.h',
-			\ 'ab.h' : ['../a.c', '../b.c'],
-			\ }
+	let g:chain_files = {
+				\ 'a.c' : 'include/ab.h',
+				\ 'b.c' : 'include/ab.h',
+				\ 'ab.h' : ['../a.c', '../b.c'],
+				\ }
 
-let g:chain_extensions =  { 'c' : 'h', 'h' : ['c', 'm'] , 'm' : 'h' }
+	let g:chain_extensions =  { 'c' : 'h', 'h' : ['c', 'm'] , 'm' : 'h' }
 
-let s:chain_files_1 = {
-			\ 'ab.h' : '../bc2/a.c',
-			\ 'bc2/a.c' : '../include/ab.h',
-			\ }
+	let s:chain_files_1 = {
+				\ 'ab.h' : '../bc2/a.c',
+				\ 'bc2/a.c' : '../include/ab.h',
+				\ }
 
-let g:dict1 = { 
-			\ '__file'     : g:chain_files,
-			\ '__extension' : g:chain_extensions,
-			\ }
+	let g:dict1 = { 
+				\ '__file'     : g:chain_files,
+				\ '__extension' : g:chain_extensions,
+				\ }
 
-let g:dict2 = { 
-			\ '__file'     : s:chain_files_1,
-			\ '__extension' : g:chain_extensions,
-			\ }
+	let g:dict2 = { 
+				\ '__file'     : s:chain_files_1,
+				\ '__extension' : g:chain_extensions,
+				\ }
 endif
 "}}}
 
@@ -38,9 +38,9 @@ function! s:get_dict(dicts) "{{{
 	let tmp_d = { '__file' : {}, '__extension' : {}, '__pattern' : []}
 	for dict_d in a:dicts
 		if type(dict_d) == type({})
-			 call extend(tmp_d.__pattern, get(dict_d, '__pattern', []))
-			 call s:Common.set_dict_extend(tmp_d.__file,      get(dict_d, '__file',      {}))
-			 call s:Common.set_dict_extend(tmp_d.__extension, get(dict_d, '__extension', {}))
+			call extend(tmp_d.__pattern, get(dict_d, '__pattern', []))
+			call s:Common.set_dict_extend(tmp_d.__file,      get(dict_d, '__file',      {}))
+			call s:Common.set_dict_extend(tmp_d.__extension, get(dict_d, '__extension', {}))
 		endif
 	endfor
 	return tmp_d
@@ -72,14 +72,14 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 
 		"優先度の変更
 		let fname_tmp = s:Common.get_fname_key(file_d, expand(rtn_str))
-let tmps = s:Common.get_len_sort(s:Common.get_list(get(file_d, fname_tmp, [])))
-echo tmps
+
+		let fname_full = substitute(fname_full, '\\', '\/', 'g')
+		let tmps = s:Common.get_len_sort(s:Common.get_list(get(file_d, fname_tmp, [])))
 		for tmp in tmps
-			echo tmp
+			let tmp = substitute(tmp, '\\', '\/', 'g')
+
+
 			if  fname_full =~ substitute(tmp, '\.\.[\/\\]', '', '')
-				echo 'HIT'
-				echo tmp
-				call input("")
 				let cache_d.__file[fname_tmp] = tmp
 				break
 			endif
@@ -143,7 +143,7 @@ function! s:chain_file(...) "{{{
 		endfor
 	else
 		" 引数なし
-			
+
 		" 設定ファイル
 		call add(dicts, 's:chain_dict_default')
 

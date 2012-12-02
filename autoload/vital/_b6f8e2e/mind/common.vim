@@ -4,7 +4,8 @@ set cpo&vim
 function! s:_len_compara(i1, i2) "{{{
 	let l1 = len(a:i1)
 	let l2 = len(a:i2)
-	return l1 == l2 ? 0 : l1 > l2 ? 1 : -1
+	"return l1 == l2 ? 0 : l1 > l2 ? 1 : -1
+	return l1 == l2 ? 0 : l1 < l2 ? 1 : -1
 endfunction
 "}}}
 
