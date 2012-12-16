@@ -6,33 +6,6 @@ let s:datafile           = '~/.vim-chain-file'
 let s:chain_dict_cache   = {}
 let s:chain_dict_default = s:Common.load(s:datafile, {})
 
-" teset "{{{
-if 1
-	let g:chain_files = {
-				\ 'a.c' : 'include/ab.h',
-				\ 'b.c' : 'include/ab.h',
-				\ 'ab.h' : ['../a.c', '../b.c'],
-				\ }
-
-	let g:chain_extensions =  { 'c' : 'h', 'h' : ['c', 'm'] , 'm' : 'h' }
-
-	let s:chain_files_1 = {
-				\ 'ab.h' : '../bc2/a.c',
-				\ 'bc2/a.c' : '../include/ab.h',
-				\ }
-
-	let g:dict1 = { 
-				\ '__file'     : g:chain_files,
-				\ '__extension' : g:chain_extensions,
-				\ }
-
-	let g:dict2 = { 
-				\ '__file'     : s:chain_files_1,
-				\ '__extension' : g:chain_extensions,
-				\ }
-endif
-"}}}
-
 function! s:get_dict(dicts) "{{{
 	" 辞書データの設定
 	let tmp_d = { '__file' : {}, '__extension' : {}, '__pattern' : []}
@@ -136,16 +109,21 @@ function! s:chain_file(...) "{{{
 
 	if a:0 > 0
 		" 引数あり
-		for dict in a:000
-			if dict =~ '.'
+		for tmp in a:000
+			let type_ = type(tmp)
+			if type_ == type('')
 				exe 'call add(dicts, '.dict.')'
+			elseif type_ == type({})
+				call add(dicts, tmp)
+			else
 			endif
+			unlet tmp
 		endfor
 	else
 		" 引数なし
 
 		" 設定ファイル
-		call add(dicts, 's:chain_dict_default')
+		call add(dicts, s:chain_dict_default)
 
 		" 辞書型
 		if exists('g:chain_dict')
@@ -177,8 +155,6 @@ command! -nargs=+ ChainSetEach call s:chain_set_each(<f-args>)
 function! s:chain_set_each(fnames) "{{{
 endfunction
 "}}}
-
-nnoremap ;h<CR> :<C-u>ChainFile g:dict2 g:dict1<CR>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
