@@ -112,7 +112,7 @@ function! s:chain_file(...) "{{{
 		for tmp in a:000
 			let type_ = type(tmp)
 			if type_ == type('')
-				exe 'call add(dicts, '.dict.')'
+				exe 'call add(dicts, '.tmp.')'
 			elseif type_ == type({})
 				call add(dicts, tmp)
 			else
