@@ -1,21 +1,27 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:Common             = vital#of('chain-file.vim').import('Mind.Common')
-let s:datafile           = '~/.vim-chain-file'
-let s:chain_dict_cache   = {}
-let s:chain_dict_default = { '__file' : {}, '__extension' : {}, '__pattern' : []}
-let tmp = s:Common.load(s:datafile, {})
-call s:Common.set_dict_extend(s:chain_dict_default, tmp)
+let s:Common   = vital#of('chain-file.vim').import('Mind.Common')
+let s:datafile = '~/.vim-chain-file'
 
+function! s:init() "{{{
+	let s:chain_dict_cache   = {}
+
+	let tmp = s:Common.load(s:datafile, {})
+
+	let s:chain_dict_default = {
+				\ '__pattern'      : get(tmp, '__pattern', []),
+				\ '__file'         : get(tmp, '__file', {}),
+				\ '__extension'    : get(tmp, '__extension', {}),
+				\ }
+endfunction
+"}}}
 function! s:get_dict(dicts) "{{{
 	" 辞書データの設定
 	let tmp_d = { '__file' : {}, '__extension' : {}, '__pattern' : []}
 	for dict_d in a:dicts
 		if type(dict_d) == type({})
 			call extend(tmp_d.__pattern, get(dict_d, '__pattern', []))
-			echo dict_d
-			" ★ __file がリストになっている
 			call s:Common.set_dict_extend(tmp_d.__file,      get(dict_d, '__file',      {}))
 			call s:Common.set_dict_extend(tmp_d.__extension, get(dict_d, '__extension', {}))
 		endif
@@ -102,6 +108,21 @@ function! s:get_fname_now()"{{{
 	return expand("%:t")
 endfunction
 "}}}
+function! s:set_chain_file(key, val) "{{{
+	if exists('s:chain_dict_default.__file[a:key]')
+		let tmp = s:chain_dict_default.__file[a:key]
+
+		if ( type(tmp) != type([]) ) 
+			unlet s:chain_dict_default.__file[a:key]
+			let s:chain_dict_default.__file[a:key] = [tmp]
+		endif
+
+		call s:Common.add_uniq(s:chain_dict_default.__file[a:key], a:val)
+	else
+		let s:chain_dict_default.__file[a:key] = a:val
+	endif
+endfunction
+"}}}
 
 command! -nargs=* ChainFile call s:chain_file(<f-args>)
 function! s:chain_file(...) "{{{
@@ -139,7 +160,6 @@ function! s:chain_file(...) "{{{
 	else
 		" 引数なし "{{{
 		" 設定ファイル
-		call add(dicts, s:chain_dict_default)
 
 		" 辞書型
 		if exists('g:chain_dict')
@@ -156,25 +176,12 @@ function! s:chain_file(...) "{{{
 					\ '__file'      : get(g: , 'chain_files'      , {}) , 
 					\ '__extension' : get(g: , 'chain_extensions' , {}) , 
 					\ })
+
+		call add(dicts, s:chain_dict_default)
 		"}}}
 	endif
 
 	exe 'edit' s:get_chain_fname(dicts, s:chain_dict_cache[setting_name])
-endfunction
-"}}}
-function! s:set_chain_file(key, val) "{{{
-	if exists('s:chain_dict_default.__file[a:key]')
-		let tmp = s:chain_dict_default.__file[a:key]
-
-		if ( type(tmp) != type([]) ) 
-			unlet s:chain_dict_default.__file[a:key]
-			let s:chain_dict_default.__file[a:key] = [tmp]
-		endif
-
-		call s:Common.add_uniq(s:chain_dict_default.__file[a:key], a:val)
-	else
-		let s:chain_dict_default.__file[a:key] = a:val
-	endif
 endfunction
 "}}}
 
@@ -198,6 +205,8 @@ function! s:chain_set_each(fnames) "{{{
 	call s:Common.save(s:datafile, s:chain_dict_default)
 endfunction
 "}}}
+
+call s:init()
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
