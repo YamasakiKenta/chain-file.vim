@@ -26,12 +26,10 @@ COMMAND *chain-file-commands*
 	{variables} に変数名を入力すると、|g:chain_dict|の代わりに使用できます。
 	変数名を複数記述する事ができます。
 
-:ChaineSet {file} *:ChaineSet*
-未実装
+:ChainSet {file} *:ChainSet*
 	リンクを設定します。
 
 :ChainSetEach {file} *:ChainSetEach*
-未実装
 	相互リンクを設定します。
 
 ==============================================================================

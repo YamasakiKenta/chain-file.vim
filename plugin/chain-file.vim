@@ -7,13 +7,13 @@ function! s:chain_file(...)
 endfunction
 
 command! -nargs=+ ChainSet call s:chain_set(<f-args>)
-function! s:chain_set(fnames) 
+function! s:chain_set(...) 
 	return call('chain_file#chain_set', a:000)
 endfunction
 
 command! -nargs=+ ChainSetEach call s:chain_set_each(<f-args>)
-function! s:chain_set_each(fnames) 
-	return call('chain_file#chain_set_each', a:00)
+function! s:chain_set_each(...) 
+	return call('chain_file#chain_set_each', a:000)
 endfunction
 
 let &cpo = s:save_cpo
