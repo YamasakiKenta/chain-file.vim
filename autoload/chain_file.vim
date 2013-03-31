@@ -20,7 +20,7 @@ function! s:init() "{{{
 endfunction
 "}}}
 function! s:get_dict(dicts) "{{{
-	" è¾æ›¸ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
+	" «‘ƒf[ƒ^‚Ìİ’è
 	let tmp_d = { '__file' : {}, '__extension' : {}, '__pattern' : []}
 	for dict_d in a:dicts
 		if type(dict_d) == type({})
@@ -40,7 +40,7 @@ endfunction
 function! s:get_chain_fname(dicts, cache_d)  "{{{
 	let cache_d      = a:cache_d
 	let extension    = expand("%:e")
-	let rtn_str      = expand("%:p") " å¤±æ•—ã—ãŸå ´åˆã¯ã€ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¿”ã™
+	let rtn_str      = expand("%:p") " ¸”s‚µ‚½ê‡‚ÍAŒ»İ‚Ìƒtƒ@ƒCƒ‹–¼‚ğ•Ô‚·
 	let fname_full   = expand("%:p")
 
 	let tmp_d        = s:get_dict(a:dicts)
@@ -48,19 +48,19 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 	let file_d       = tmp_d.__file
 	let extension_d  = tmp_d.__extension
 
-	" ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ã€è¾æ›¸ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰æ¤œç´¢ã—ã€KEY ã‚’å–å¾—ã™ã‚‹
+	" Œ»İ‚Ìƒtƒ@ƒCƒ‹–¼‚©‚çA«‘ƒf[ƒ^‚©‚çŒŸõ‚µAKEY ‚ğæ“¾‚·‚é
 	let fname_tmp = s:Common.get_fname_key(file_d, fname_full)
 
 	if exists('file_d[fname_tmp]') 
-		" å¯¾å¿œã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«
+		" ‘Î‰‚·‚éƒtƒ@ƒCƒ‹
 		let tmps = s:Common.get_list(file_d[fname_tmp])
 
-		" é–‹ããƒ•ã‚¡ã‚¤ãƒ«åã®å–å¾—
+		" ŠJ‚­ƒtƒ@ƒCƒ‹–¼‚Ìæ“¾
 		let rtn_str = expand("%:h").'/'.tmps[0]
 
-		" === ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ãã‚ˆã†ã«ã™ã‚‹ ===
+		" === Œ»İ‚Ìƒtƒ@ƒCƒ‹‚ªŠJ‚­‚æ‚¤‚É‚·‚é ===
 		"
-		" é–‹ããƒ•ã‚¡ã‚¤ãƒ«å
+		" ŠJ‚­ƒtƒ@ƒCƒ‹–¼
 		let fname_tmp = s:Common.get_fname_key(file_d, expand(rtn_str))
 
 		let fname_full = substitute(fname_full, '\\', '\/', 'g')
@@ -90,10 +90,10 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 			if exists('extension_d[extension]')
 				let extension_next = s:Common.get_list(extension_d[extension])[0]
 
-				"å¯¾å¿œã™ã‚‹æ‹¡å¼µå­
+				"‘Î‰‚·‚éŠg’£q
 				let rtn_str = expand("%:r").".".extension_next
 
-				" å„ªå…ˆåº¦ã®å¤‰æ›´
+				" —Dæ“x‚Ì•ÏX
 				for tmp in s:Common.get_list(get(extension_d, extension_next, []))
 					if extension == tmp
 						let cache_d.__extension[extension_next] = tmp
@@ -130,18 +130,18 @@ endfunction
 function! chain_file#chain_file(...) "{{{
 	" ********************************************************************************
 	" @par       
-	" @param[in] è¨­å®šãƒ‡ãƒ¼ã‚¿, è¨­å®šãƒ‡ãƒ¼ã‚¿ã®å¤‰æ•°å
+	" @param[in] İ’èƒf[ƒ^, İ’èƒf[ƒ^‚Ì•Ï”–¼
 	" @retval    
 	" ********************************************************************************
 	call s:init()
 
 	let dicts = []
 
-	" å±¥æ­´ "{{{
-	" å¼•æ•°æ¯ã«å±¥æ­´ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã‚€
+	" —š—ğ "{{{
+	" ˆø”–ˆ‚É—š—ğƒf[ƒ^‚ğ“Ç‚Ş
 	let setting_name = a:0 > 0 ? join(a:000, '_') : 'default' 
 
-	" å±¥æ­´ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã‚€
+	" —š—ğƒf[ƒ^‚ğ“Ç‚Ş
 	if exists('s:chain_dict_cache[setting_name]')
 		call add(dicts, s:chain_dict_cache[setting_name])
 	else 
@@ -152,24 +152,24 @@ function! chain_file#chain_file(...) "{{{
 	endif
 	"}}}
 
-	" è¨­å®šãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹
+	" İ’èƒf[ƒ^‚ğì¬‚·‚é
 	if a:0 > 0
-		" å¼•æ•°ã‚ã‚Š "{{{
+		" ˆø”‚ ‚è "{{{
 		for tmp in a:000
 			let type_ = type(tmp)
 			if type_ == type('')
-				" å¤‰æ•°åã®å ´åˆã¯ã€ä¸­èº«ã®ãƒ‡ãƒ¼ã‚¿ã‚’æŒ¿å…¥
+				" •Ï”–¼‚Ìê‡‚ÍA’†g‚Ìƒf[ƒ^‚ğ‘}“ü
 				exe 'call add(dicts, '.tmp.')'
 			elseif type_ == type({})
-				" å¤‰æ•°åã®å ´åˆã¯ã€ä¸­èº«ã®ãƒ‡ãƒ¼ã‚¿ã‚’æŒ¿å…¥
+				" •Ï”–¼‚Ìê‡‚ÍA’†g‚Ìƒf[ƒ^‚ğ‘}“ü
 				call add(dicts, tmp)
 			endif
 			unlet tmp
 		endfor
 		"}}}
 	else
-		" å¼•æ•°ãªã— "{{{
-		" è¾æ›¸å‹
+		" ˆø”‚È‚µ "{{{
+		" «‘Œ^
 		if exists('g:chain_dict')
 			call add(dicts, {
 						\ '__pattern'   : get(g:chain_dict , '__pattern'   , []) , 
@@ -178,7 +178,7 @@ function! chain_file#chain_file(...) "{{{
 						\ })
 		endif
 
-		" å€‹åˆ¥
+		" ŒÂ•Ê
 		call add(dicts, {
 					\ '__pattern'   : get(g: , 'chain_patterns'   , []) , 
 					\ '__file'      : get(g: , 'chain_files'      , {}) , 
@@ -195,7 +195,7 @@ endfunction
 "
 function! chain_file#chain_set(fnames) "{{{
 	call s:init()
-	" ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«ç´ã¥ããƒ•ã‚¡ã‚¤ãƒ«ã‚’è¨­å®šã™ã‚‹
+	" Œ»İ‚Ìƒtƒ@ƒCƒ‹‚É•R‚Ã‚­ƒtƒ@ƒCƒ‹‚ğİ’è‚·‚é
 	let fname_now = s:get_fname_now()
 	call s:set_chain_file(fname_now, a:fnames)
 	call s:Common.save(s:datafile, s:chain_dict_default)
@@ -203,7 +203,7 @@ endfunction
 "}}}
 "
 function! chain_file#chain_set_each(fnames) "{{{
-	" ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«ç´ã¥ããƒ•ã‚¡ã‚¤ãƒ«ã‚’è¨­å®šã™ã‚‹ 
+	" Œ»İ‚Ìƒtƒ@ƒCƒ‹‚É•R‚Ã‚­ƒtƒ@ƒCƒ‹‚ğİ’è‚·‚é 
 	let fname_now = s:get_fname_now()
 	call s:set_chain_file(fname_now, a:fnames)
 	for fname in s:Common.get_list(a:fnames)

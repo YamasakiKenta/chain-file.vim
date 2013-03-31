@@ -1,6 +1,5 @@
 let s:save_cpo = &cpo
 set cpo&vim
-setl enc=utf8
 
 command! -nargs=* ChainFile call s:chain_file(<f-args>)
 function! s:chain_file(...) 
