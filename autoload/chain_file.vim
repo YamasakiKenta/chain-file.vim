@@ -1,9 +1,11 @@
+let s:save_cpo = &cpo
+set cpo&vim
+
 let s:Common   = vital#of('chain-file.vim').import('Mind.Common')
 let s:datafile = '~/.vim-chain-file'
-let s:init_flg = 0
 
 function! s:init() "{{{
-	if s:init_flg == 1
+	if exists('s:init_flg')
 		return 
 	endif
 	let s:init_flg = 1
@@ -189,7 +191,7 @@ function! chain_file#chain_file(...) "{{{
 		"}}}
 	endif
 
-	exe 'edit' s:get_chain_fname(dicts, s:chain_dict_cache[setting_name])
+	exe 'edit' simplify(s:get_chain_fname(dicts, s:chain_dict_cache[setting_name]))
 endfunction
 "}}}
 "
@@ -213,3 +215,9 @@ function! chain_file#chain_set_each(fnames) "{{{
 endfunction
 "}}}
 
+if exists('s:save_cpo')
+	let &cpo = s:save_cpo
+	unlet s:save_cpo
+else
+	set cpo&
+endif
