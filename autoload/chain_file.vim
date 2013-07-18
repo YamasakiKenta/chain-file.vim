@@ -180,13 +180,6 @@ function! chain_file#chain_file(...) "{{{
 						\ })
 		endif
 
-		" ŒÂ•Ê
-		call add(dicts, {
-					\ '__pattern'   : get(g: , 'chain_patterns'   , []) , 
-					\ '__file'      : get(g: , 'chain_files'      , {}) , 
-					\ '__extension' : get(g: , 'chain_extensions' , {}) , 
-					\ })
-
 		call add(dicts, s:chain_dict_default)
 		"}}}
 	endif
