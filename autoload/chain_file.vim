@@ -80,6 +80,10 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 		for pattern_d in patterns
 			let before = pattern_d.before
 			let after  = pattern_d.after
+			echo fname_full
+			echo before
+			echo after
+			call input("")
 
 			if fname_full =~ before
 				let change_flg = 1
