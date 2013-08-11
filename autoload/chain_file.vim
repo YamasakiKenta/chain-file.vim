@@ -50,10 +50,11 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 	let file_d       = tmp_d.__file
 	let extension_d  = tmp_d.__extension
 
+	let fname_full = substitute(fname_full, '\\', '\/', 'g')
+
 	" 現在のファイル名から、辞書データから検索し、KEY を取得する
 	let fname_tmp = s:Common.get_fname_key(file_d, fname_full)
 
-	let fname_full = substitute(fname_full, '\\', '\/', 'g')
 	if exists('file_d[fname_tmp]') 
 		" 対応するファイル
 		let tmps = s:Common.get_list(file_d[fname_tmp])
