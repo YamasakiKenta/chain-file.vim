@@ -53,6 +53,7 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 	" 現在のファイル名から、辞書データから検索し、KEY を取得する
 	let fname_tmp = s:Common.get_fname_key(file_d, fname_full)
 
+	let fname_full = substitute(fname_full, '\\', '\/', 'g')
 	if exists('file_d[fname_tmp]') 
 		" 対応するファイル
 		let tmps = s:Common.get_list(file_d[fname_tmp])
@@ -80,10 +81,6 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 		for pattern_d in patterns
 			let before = pattern_d.before
 			let after  = pattern_d.after
-			echo fname_full
-			echo before
-			echo after
-			call input("")
 
 			if fname_full =~ before
 				let change_flg = 1
