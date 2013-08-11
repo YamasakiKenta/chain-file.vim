@@ -66,7 +66,6 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 		" 開くファイル名
 		let fname_tmp = s:Common.get_fname_key(file_d, expand(rtn_str))
 
-		let fname_full = substitute(fname_full, '\\', '\/', 'g')
 		let tmps = s:Common.get_len_sort(s:Common.get_list(get(file_d, fname_tmp, [])))
 		for tmp in tmps
 			let tmp = substitute(tmp, '\\', '\/', 'g')
