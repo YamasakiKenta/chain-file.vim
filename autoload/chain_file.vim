@@ -4,6 +4,10 @@ set cpo&vim
 let s:Common   = vital#of('chain-file.vim').import('Mind.Common')
 let s:datafile = '~/.vim-chain-file'
 
+function! s:get_list(tmp) "{{{
+	return (type(a:tmp) == type([])) ? a:tmp : [a:tmp]
+endfunction
+"}}}
 function! s:init() "{{{
 	if exists('s:init_flg')
 		return 
@@ -57,7 +61,7 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 
 	if exists('file_d[fname_tmp]') 
 		" 対応するファイル
-		let tmps = s:Common.get_list(file_d[fname_tmp])
+		let tmps = s:get_list(file_d[fname_tmp])
 
 		" 開くファイル名の取得
 		let rtn_str = expand("%:h").'/'.tmps[0]
@@ -67,7 +71,7 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 		" 開くファイル名
 		let fname_tmp = s:Common.get_fname_key(file_d, expand(rtn_str))
 
-		let tmps = s:Common.get_len_sort(s:Common.get_list(get(file_d, fname_tmp, [])))
+		let tmps = s:Common.get_len_sort(s:get_list(get(file_d, fname_tmp, [])))
 		for tmp in tmps
 			let tmp = substitute(tmp, '\\', '\/', 'g')
 
@@ -91,13 +95,13 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 		endfor
 		if change_flg == 0 
 			if exists('extension_d[extension]')
-				let extension_next = s:Common.get_list(extension_d[extension])[0]
+				let extension_next = s:get_list(extension_d[extension])[0]
 
 				"対応する拡張子
 				let rtn_str = expand("%:r").".".extension_next
 
 				" 優先度の変更
-				for tmp in s:Common.get_list(get(extension_d, extension_next, []))
+				for tmp in s:get_list(get(extension_d, extension_next, []))
 					if extension == tmp
 						let cache_d.__extension[extension_next] = tmp
 						break
@@ -202,7 +206,7 @@ function! chain_file#chain_set_each(fnames) "{{{
 	" 現在のファイルに紐づくファイルを設定する 
 	let fname_now = s:get_fname_now()
 	call s:set_chain_file(fname_now, a:fnames)
-	for fname in s:Common.get_list(a:fnames)
+	for fname in s:get_list(a:fnames)
 		call s:set_chain_file(fname, fname_now)
 	endfor
 	call s:Common.save(s:datafile, s:chain_dict_default)
