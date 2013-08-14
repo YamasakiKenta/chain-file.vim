@@ -8,6 +8,24 @@ function! s:get_list(tmp) "{{{
 	return (type(a:tmp) == type([])) ? a:tmp : [a:tmp]
 endfunction
 "}}}
+function! s:set_dict_extend(dict1, dict2) "{{{
+	" 同じキーがある場合は、リストで結合して返す
+	
+	" 大きい方をdict1 に設定する
+	let [dict1, dict2] = [a:dict1, a:dict2]
+
+	" a:dict1 を優先させる
+	let dict_new = dict1
+	for key in keys(dict2)
+		let dict_new[key] = exists('dict_new[key]')
+					\ ? extend(s:get_list(a:dict1[key]), s:get_list(a:dict2[key])) 
+					\ : dict2[key]
+	endfor
+
+	return dict_new
+endfunction
+"}}}
+
 function! s:init() "{{{
 	if exists('s:init_flg')
 		return 
@@ -31,8 +49,8 @@ function! s:get_dict(dicts) "{{{
 	for dict_d in a:dicts
 		if type(dict_d) == type({})
 			call extend(tmp_d.__pattern, get(dict_d, '__pattern', []))
-			call s:Common.set_dict_extend(tmp_d.__file,      get(dict_d, '__file',      {}))
-			call s:Common.set_dict_extend(tmp_d.__extension, get(dict_d, '__extension', {}))
+			call s:set_dict_extend(tmp_d.__file,      get(dict_d, '__file',      {}))
+			call s:set_dict_extend(tmp_d.__extension, get(dict_d, '__extension', {}))
 		endif
 	endfor
 	return tmp_d
