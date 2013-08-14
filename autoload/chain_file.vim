@@ -25,6 +25,19 @@ function! s:set_dict_extend(dict1, dict2) "{{{
 	return dict_new
 endfunction
 "}}}
+function! s:get_fname_key(file_d, fname_full) "{{{
+	" 辞書型に登録しているキーを、検索する 
+	" ( キーが見つかるまで、ファイル名を短くする ) 
+
+	let file_d    = a:file_d
+	let fname_tmp  = substitute(a:fname_full, '\\', '\/', 'g')
+
+	while len(fname_tmp) && !exists('file_d[fname_tmp]')
+		let fname_tmp  = matchstr(fname_tmp, '.\{-}[\/\\]\zs.*')
+	endwhile
+	return fname_tmp
+endfunction
+"}}}
 
 function! s:init() "{{{
 	if exists('s:init_flg')
@@ -75,7 +88,7 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 	let fname_full = substitute(fname_full, '\\', '\/', 'g')
 
 	" 現在のファイル名から、辞書データから検索し、KEY を取得する
-	let fname_tmp = s:Common.get_fname_key(file_d, fname_full)
+	let fname_tmp = s:get_fname_key(file_d, fname_full)
 
 	if exists('file_d[fname_tmp]') 
 		" 対応するファイル
@@ -87,7 +100,7 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 		" === 現在のファイルが開くようにする ===
 		"
 		" 開くファイル名
-		let fname_tmp = s:Common.get_fname_key(file_d, expand(rtn_str))
+		let fname_tmp = s:get_fname_key(file_d, expand(rtn_str))
 
 		let tmps = s:Common.get_len_sort(s:get_list(get(file_d, fname_tmp, [])))
 		for tmp in tmps
