@@ -23,37 +23,37 @@ License: MIT license  {{{
 ==============================================================================
 COMMAND *chain-file-commands*
 :ChainFile [{variables}] *:ChainFile*
-	{variables} ‚É•Ï”–¼‚ğ“ü—Í‚·‚é‚ÆA|g:chain_dict|‚Ì‘ã‚í‚è‚Ég—p‚Å‚«‚Ü‚·B
-	•Ï”–¼‚ğ•¡”‹Lq‚·‚é–‚ª‚Å‚«‚Ü‚·B
+	{variables} ã«å¤‰æ•°åã‚’å…¥åŠ›ã™ã‚‹ã¨ã€|g:chain_dict|ã®ä»£ã‚ã‚Šã«ä½¿ç”¨ã§ãã¾ã™ã€‚
+	å¤‰æ•°åã‚’è¤‡æ•°è¨˜è¿°ã™ã‚‹äº‹ãŒã§ãã¾ã™ã€‚
 
 :ChainSet {file} *:ChainSet*
-	ƒŠƒ“ƒN‚ğİ’è‚µ‚Ü‚·B
+	ãƒªãƒ³ã‚¯ã‚’è¨­å®šã—ã¾ã™ã€‚
 
 :ChainSetEach {file} *:ChainSetEach*
-	‘ŠŒİƒŠƒ“ƒN‚ğİ’è‚µ‚Ü‚·B
+	ç›¸äº’ãƒªãƒ³ã‚¯ã‚’è¨­å®šã—ã¾ã™ã€‚
 
 ==============================================================================
 VARIABLES *chainj-file-variables*
 
 g:chain_dict *g:chain_dict*
-	‰º‚Ìƒtƒ@ƒCƒ‹‚ğŒ‹‡‚µ‚½•Ï”‚É‚È‚è‚Ü‚·B
+	ä¸‹ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’çµåˆã—ãŸå¤‰æ•°ã«ãªã‚Šã¾ã™ã€‚
 
 	__file	
 		*chain-file-attribute-g:chain_dict-__file*
-		‘JˆÚ‚·‚éƒtƒ@ƒCƒ‹æ‚Å‚·B
+		é·ç§»ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å…ˆã§ã™ã€‚
 
 	__extension
 		*chain-file-attribute-g:chain_dict-__extension*
-		‘Î‰‚·‚éŠg’£q‚Å‚·B
+		å¯¾å¿œã™ã‚‹æ‹¡å¼µå­ã§ã™ã€‚
 
 	__pattern
 		*chain-file-attribute-g:chain_dict-__pattern*
-		ƒtƒ@ƒCƒ‹–¼‚ğ’uŠ·‚µ‚Ü‚·B
+		ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ç½®æ›ã—ã¾ã™ã€‚
 
-—Dæ‡ˆÊ‚ÍA
+å„ªå…ˆé †ä½ã¯ã€
 1. __file
 2. __extension
 3. __patterns
-‚É‚È‚è‚Ü‚·B
+ã«ãªã‚Šã¾ã™ã€‚
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:noet:fen:fdl=0:

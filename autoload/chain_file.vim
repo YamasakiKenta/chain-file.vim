@@ -9,12 +9,12 @@ function! s:get_list(tmp) "{{{
 endfunction
 "}}}
 function! s:set_dict_extend(dict1, dict2) "{{{
-	" “¯‚¶ƒL[‚ª‚ ‚éê‡‚ÍAƒŠƒXƒg‚ÅŒ‹‡‚µ‚Ä•Ô‚·
+	" åŒã˜ã‚­ãƒ¼ãŒã‚ã‚‹å ´åˆã¯ã€ãƒªã‚¹ãƒˆã§çµåˆã—ã¦è¿”ã™
 	
-	" ‘å‚«‚¢•û‚ğdict1 ‚Éİ’è‚·‚é
+	" å¤§ãã„æ–¹ã‚’dict1 ã«è¨­å®šã™ã‚‹
 	let [dict1, dict2] = [a:dict1, a:dict2]
 
-	" a:dict1 ‚ğ—Dæ‚³‚¹‚é
+	" a:dict1 ã‚’å„ªå…ˆã•ã›ã‚‹
 	let dict_new = dict1
 	for key in keys(dict2)
 		let dict_new[key] = exists('dict_new[key]')
@@ -26,8 +26,8 @@ function! s:set_dict_extend(dict1, dict2) "{{{
 endfunction
 "}}}
 function! s:get_fname_key(file_d, fname_full) "{{{
-	" «‘Œ^‚É“o˜^‚µ‚Ä‚¢‚éƒL[‚ğAŒŸõ‚·‚é 
-	" ( ƒL[‚ªŒ©‚Â‚©‚é‚Ü‚ÅAƒtƒ@ƒCƒ‹–¼‚ğ’Z‚­‚·‚é ) 
+	" è¾æ›¸å‹ã«ç™»éŒ²ã—ã¦ã„ã‚‹ã‚­ãƒ¼ã‚’ã€æ¤œç´¢ã™ã‚‹ 
+	" ( ã‚­ãƒ¼ãŒè¦‹ã¤ã‹ã‚‹ã¾ã§ã€ãƒ•ã‚¡ã‚¤ãƒ«åã‚’çŸ­ãã™ã‚‹ ) 
 
 	let file_d    = a:file_d
 	let fname_tmp  = substitute(a:fname_full, '\\', '\/', 'g')
@@ -57,7 +57,7 @@ function! s:init() "{{{
 endfunction
 "}}}
 function! s:get_dict(dicts) "{{{
-	" «‘ƒf[ƒ^‚Ìİ’è
+	" è¾æ›¸ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
 	let tmp_d = { '__file' : {}, '__extension' : {}, '__pattern' : []}
 	for dict_d in a:dicts
 		if type(dict_d) == type({})
@@ -77,7 +77,7 @@ endfunction
 function! s:get_chain_fname(dicts, cache_d)  "{{{
 	let cache_d      = a:cache_d
 	let extension    = expand("%:e")
-	let rtn_str      = expand("%:p") " ¸”s‚µ‚½ê‡‚ÍAŒ»İ‚Ìƒtƒ@ƒCƒ‹–¼‚ğ•Ô‚·
+	let rtn_str      = expand("%:p") " å¤±æ•—ã—ãŸå ´åˆã¯ã€ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¿”ã™
 	let fname_full   = expand("%:p")
 
 	let tmp_d        = s:get_dict(a:dicts)
@@ -87,19 +87,19 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 
 	let fname_full = substitute(fname_full, '\\', '\/', 'g')
 
-	" Œ»İ‚Ìƒtƒ@ƒCƒ‹–¼‚©‚çA«‘ƒf[ƒ^‚©‚çŒŸõ‚µAKEY ‚ğæ“¾‚·‚é
+	" ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ã€è¾æ›¸ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰æ¤œç´¢ã—ã€KEY ã‚’å–å¾—ã™ã‚‹
 	let fname_tmp = s:get_fname_key(file_d, fname_full)
 
 	if exists('file_d[fname_tmp]') 
-		" ‘Î‰‚·‚éƒtƒ@ƒCƒ‹
+		" å¯¾å¿œã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«
 		let tmps = s:get_list(file_d[fname_tmp])
 
-		" ŠJ‚­ƒtƒ@ƒCƒ‹–¼‚Ìæ“¾
+		" é–‹ããƒ•ã‚¡ã‚¤ãƒ«åã®å–å¾—
 		let rtn_str = expand("%:h").'/'.tmps[0]
 
-		" === Œ»İ‚Ìƒtƒ@ƒCƒ‹‚ªŠJ‚­‚æ‚¤‚É‚·‚é ===
+		" === ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ãã‚ˆã†ã«ã™ã‚‹ ===
 		"
-		" ŠJ‚­ƒtƒ@ƒCƒ‹–¼
+		" é–‹ããƒ•ã‚¡ã‚¤ãƒ«å
 		let fname_tmp = s:get_fname_key(file_d, expand(rtn_str))
 
 		let tmps = s:Common.get_len_sort(s:get_list(get(file_d, fname_tmp, [])))
@@ -128,10 +128,10 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 			if exists('extension_d[extension]')
 				let extension_next = s:get_list(extension_d[extension])[0]
 
-				"‘Î‰‚·‚éŠg’£q
+				"å¯¾å¿œã™ã‚‹æ‹¡å¼µå­
 				let rtn_str = expand("%:r").".".extension_next
 
-				" —Dæ“x‚Ì•ÏX
+				" å„ªå…ˆåº¦ã®å¤‰æ›´
 				for tmp in s:get_list(get(extension_d, extension_next, []))
 					if extension == tmp
 						let cache_d.__extension[extension_next] = tmp
@@ -168,18 +168,18 @@ endfunction
 function! chain_file#chain_file(...) "{{{
 	" ********************************************************************************
 	" @par       
-	" @param[in] İ’èƒf[ƒ^, İ’èƒf[ƒ^‚Ì•Ï”–¼
+	" @param[in] è¨­å®šãƒ‡ãƒ¼ã‚¿, è¨­å®šãƒ‡ãƒ¼ã‚¿ã®å¤‰æ•°å
 	" @retval    
 	" ********************************************************************************
 	call s:init()
 
 	let dicts = []
 
-	" —š—ğ "{{{
-	" ˆø”–ˆ‚É—š—ğƒf[ƒ^‚ğ“Ç‚Ş
+	" å±¥æ­´ "{{{
+	" å¼•æ•°æ¯ã«å±¥æ­´ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã‚€
 	let setting_name = a:0 > 0 ? join(a:000, '_') : 'default' 
 
-	" —š—ğƒf[ƒ^‚ğ“Ç‚Ş
+	" å±¥æ­´ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã‚€
 	if exists('s:chain_dict_cache[setting_name]')
 		call add(dicts, s:chain_dict_cache[setting_name])
 	else 
@@ -190,24 +190,24 @@ function! chain_file#chain_file(...) "{{{
 	endif
 	"}}}
 
-	" İ’èƒf[ƒ^‚ğì¬‚·‚é
+	" è¨­å®šãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹
 	if a:0 > 0
-		" ˆø”‚ ‚è "{{{
+		" å¼•æ•°ã‚ã‚Š "{{{
 		for tmp in a:000
 			let type_ = type(tmp)
 			if type_ == type('')
-				" •Ï”–¼‚Ìê‡‚ÍA’†g‚Ìƒf[ƒ^‚ğ‘}“ü
+				" å¤‰æ•°åã®å ´åˆã¯ã€ä¸­èº«ã®ãƒ‡ãƒ¼ã‚¿ã‚’æŒ¿å…¥
 				exe 'call add(dicts, '.tmp.')'
 			elseif type_ == type({})
-				" •Ï”–¼‚Ìê‡‚ÍA’†g‚Ìƒf[ƒ^‚ğ‘}“ü
+				" å¤‰æ•°åã®å ´åˆã¯ã€ä¸­èº«ã®ãƒ‡ãƒ¼ã‚¿ã‚’æŒ¿å…¥
 				call add(dicts, tmp)
 			endif
 			unlet tmp
 		endfor
 		"}}}
 	else
-		" ˆø”‚È‚µ "{{{
-		" «‘Œ^
+		" å¼•æ•°ãªã— "{{{
+		" è¾æ›¸å‹
 		if exists('g:chain_dict')
 			call add(dicts, {
 						\ '__pattern'   : get(g:chain_dict , '__pattern'   , []) , 
@@ -226,7 +226,7 @@ endfunction
 "
 function! chain_file#chain_set(fnames) "{{{
 	call s:init()
-	" Œ»İ‚Ìƒtƒ@ƒCƒ‹‚É•R‚Ã‚­ƒtƒ@ƒCƒ‹‚ğİ’è‚·‚é
+	" ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«ç´ã¥ããƒ•ã‚¡ã‚¤ãƒ«ã‚’è¨­å®šã™ã‚‹
 	let fname_now = s:get_fname_now()
 	call s:set_chain_file(fname_now, a:fnames)
 	call s:Common.save(s:datafile, s:chain_dict_default)
@@ -234,7 +234,7 @@ endfunction
 "}}}
 "
 function! chain_file#chain_set_each(fnames) "{{{
-	" Œ»İ‚Ìƒtƒ@ƒCƒ‹‚É•R‚Ã‚­ƒtƒ@ƒCƒ‹‚ğİ’è‚·‚é 
+	" ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«ç´ã¥ããƒ•ã‚¡ã‚¤ãƒ«ã‚’è¨­å®šã™ã‚‹ 
 	let fname_now = s:get_fname_now()
 	call s:set_chain_file(fname_now, a:fnames)
 	for fname in s:get_list(a:fnames)
