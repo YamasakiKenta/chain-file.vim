@@ -220,7 +220,10 @@ function! chain_file#chain_file(...) "{{{
 		"}}}
 	endif
 
-	exe 'edit' simplify(s:get_chain_fname(dicts, s:chain_dict_cache[setting_name]))
+	let fname = simplify(s:get_chain_fname(dicts, s:chain_dict_cache[setting_name]))
+	if len(fname)
+		exe 'edit'  fname
+	endif
 endfunction
 "}}}
 "
