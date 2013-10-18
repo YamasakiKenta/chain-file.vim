@@ -1,0 +1,10 @@
+:ChainFile	chain-file.jax	/*:ChainFile*
+:ChainSet	chain-file.jax	/*:ChainSet*
+:ChainSetEach	chain-file.jax	/*:ChainSetEach*
+chain-file-attribute-g:chain_dict-__extension	chain-file.jax	/*chain-file-attribute-g:chain_dict-__extension*
+chain-file-attribute-g:chain_dict-__file	chain-file.jax	/*chain-file-attribute-g:chain_dict-__file*
+chain-file-attribute-g:chain_dict-__pattern	chain-file.jax	/*chain-file-attribute-g:chain_dict-__pattern*
+chain-file-commands	chain-file.jax	/*chain-file-commands*
+chain-file.jax	chain-file.jax	/*chain-file.jax*
+chainj-file-variables	chain-file.jax	/*chainj-file-variables*
+g:chain_dict	chain-file.jax	/*g:chain_dict*
