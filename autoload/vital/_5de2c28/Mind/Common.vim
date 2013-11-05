@@ -13,43 +13,6 @@ function! s:get_len_sort(lists) "{{{
 	return sort(a:lists, "s:_len_compara")
 endfunction
 "}}}
-function! s:save(name, dict) "{{{
-
-	let tmps  = ['let g:tmp = '] + map(split(string(a:dict), '},\zs'), "'	\\ '.v:val")
-
-	let lines = []
-	call extend(lines, [
-				\ 'let s:save_cpo = &cpo',
-				\ 'set cpo&vim',
-				\ '',
-				\ 'if exists("g:tmp")',
-				\ '	unlet g:tmp',
-				\ 'endif',
-				\ '',
-				\ ])
-
-	call extend(lines, tmps)
-	call extend(lines, [
-				\ '',
-				\ 'let &cpo = s:save_cpo',
-				\ 'unlet s:save_cpo',
-				\ ])
-	call writefile(lines, expand(a:name))
-endfunction
-"}}}
-function! s:load(name, default) "{{{
-	" ファイルを読み込む
-	if exists('g:tmp')
-		unlet g:tmp
-	endif
-
-	if filereadable(expand(a:name))
-		exe 'so '.a:name
-	endif
-
-	return get(g:, 'tmp', a:default)
-endfunction
-"}}}
 
 function! s:MyQuit() "{{{
 	" ファイル内で使用

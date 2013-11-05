@@ -2,7 +2,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let s:Common   = vital#of('chain-file.vim').import('Mind.Common')
-let s:datafile = '~/.vim-chain-file'
+let s:datafile = '~/.chain'
 
 function! s:get_list(tmp) "{{{
 	return (type(a:tmp) == type([])) ? a:tmp : [a:tmp]
@@ -47,7 +47,7 @@ function! s:init() "{{{
 
 	let s:chain_dict_cache   = {}
 
-	let tmp = s:Common.load(s:datafile, {})
+	let tmp = eval(readfile(s:datafile))
 
 	let s:chain_dict_default = {
 				\ '__pattern'      : get(tmp, '__pattern', []),
@@ -227,12 +227,16 @@ function! chain_file#chain_file(...) "{{{
 endfunction
 "}}}
 "
+function! s:save()
+	call writefile(s:datafile, string(s:chain_dict_default))
+endfunction
+
 function! chain_file#chain_set(fnames) "{{{
 	call s:init()
 	" 現在のファイルに紐づくファイルを設定する
 	let fname_now = s:get_fname_now()
 	call s:set_chain_file(fname_now, a:fnames)
-	call s:Common.save(s:datafile, s:chain_dict_default)
+	call s:save()
 endfunction
 "}}}
 "
@@ -243,7 +247,7 @@ function! chain_file#chain_set_each(fnames) "{{{
 	for fname in s:get_list(a:fnames)
 		call s:set_chain_file(fname, fname_now)
 	endfor
-	call s:Common.save(s:datafile, s:chain_dict_default)
+	call s:save()
 endfunction
 "}}}
 

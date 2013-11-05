@@ -1,12 +1,12 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-command! -nargs=* ChainFile call s:chain_file(<f-args>)
+command! -nargs=* ChainFile call chain_file#chain_file(<f-args>)
 function! s:chain_file(...) 
 	return call('chain_file#chain_file', a:000)
 endfunction
 
-command! -nargs=+ ChainSet call s:chain_set(<f-args>)
+command! -nargs=+ ChainSet call chain_file#chain_set(<f-args>)
 function! s:chain_set(...) 
 	return call('chain_file#chain_set', a:000)
 endfunction
