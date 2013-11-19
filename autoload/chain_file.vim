@@ -1,7 +1,6 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:Common   = vital#of('chain-file.vim').import('Mind.Common')
 let s:datafile = '~/.chain'
 
 function! s:get_list(tmp) "{{{
@@ -39,6 +38,9 @@ function! s:get_fname_key(file_d, fname_full) "{{{
 endfunction
 "}}}
 
+function! s:get_len_sort(lists)
+	return sort(a:lists, 'len(v:rhs)>len(v:lhs)')
+endfunction
 function! s:init() "{{{
 	if exists('s:init_flg')
 		return 
@@ -47,7 +49,11 @@ function! s:init() "{{{
 
 	let s:chain_dict_cache   = {}
 
-	let tmp = eval(readfile(s:datafile))
+	if (filereadable(s:datafile))
+		let tmp = eval(readfile(s:datafile))
+	else
+		let tmp = {}
+	endif
 
 	let s:chain_dict_default = {
 				\ '__pattern'      : get(tmp, '__pattern', []),
@@ -102,7 +108,7 @@ function! s:get_chain_fname(dicts, cache_d)  "{{{
 		" 開くファイル名
 		let fname_tmp = s:get_fname_key(file_d, expand(rtn_str))
 
-		let tmps = s:Common.get_len_sort(s:get_list(get(file_d, fname_tmp, [])))
+		let tmps = s:get_len_sort(s:get_list(get(file_d, fname_tmp, [])))
 		for tmp in tmps
 			let tmp = substitute(tmp, '\\', '\/', 'g')
 
@@ -149,6 +155,28 @@ function! s:get_fname_now()"{{{
 	return expand("%:t")
 endfunction
 "}}}
+function! s:add_uniq(lists, val) "{{{
+	"TEST: "{{{
+	"echo s:add_uniq([1,2,3],1)==[1,2,3]?"OK":"NG"
+	"echo s:add_uniq([2,3],1)==[2,3,1]?"OK":"NG"
+	"}}}
+	let lists    = a:lists
+	let find_flg = 0
+
+	for list in lists
+		if list == a:val
+			let find_flg = 1
+			break
+		endif
+	endfor
+
+	if find_flg == 0
+		call add(lists, a:val)
+	endif
+
+	return lists
+endfunction "}}}
+
 function! s:set_chain_file(key, val) "{{{
 	if exists('s:chain_dict_default.__file[a:key]')
 		let tmp = s:chain_dict_default.__file[a:key]
@@ -158,7 +186,7 @@ function! s:set_chain_file(key, val) "{{{
 			let s:chain_dict_default.__file[a:key] = [tmp]
 		endif
 
-		call s:Common.add_uniq(s:chain_dict_default.__file[a:key], a:val)
+		call s:add_uniq(s:chain_dict_default.__file[a:key], a:val)
 	else
 		let s:chain_dict_default.__file[a:key] = a:val
 	endif
