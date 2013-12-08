@@ -38,8 +38,11 @@ function! s:get_fname_key(file_d, fname_full) "{{{
 endfunction
 "}}}
 
+function! s:sort(a,b)
+	return len(a:a)>len(a:b)
+endfunction
 function! s:get_len_sort(lists)
-	return sort(a:lists, 'len(v:rhs)>len(v:lhs)')
+	return sort(a:lists, 's:sort')
 endfunction
 function! s:init() "{{{
 	if exists('s:init_flg')
